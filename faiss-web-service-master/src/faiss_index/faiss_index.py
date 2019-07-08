@@ -25,6 +25,7 @@ class FaissIndex(object):
 
         return results
 
+    # main searching function
     def __search__(self, ids, vectors, k):
         def neighbor_dict(id_, score):
             return { 'id': str(id_), 'score': float(score) }
@@ -34,10 +35,10 @@ class FaissIndex(object):
 
         vectors = [np.array(vector, dtype=np.float32) for vector in vectors]
         vectors = np.atleast_2d(vectors)
-
+        # change it to your mysql address please
         db = MySQLdb.connect('192.168.99.1', port=3306, user='root', password='12345678', db=self.db_name, charset='utf8')
         cursor = db.cursor()
-
+        # main
         scores, neighbors = self.index.search(vectors, k) if vectors.size > 0 else ([], [])
         results = []
         for id_, vector, neighbors, scores in zip(ids, vectors, neighbors, scores):

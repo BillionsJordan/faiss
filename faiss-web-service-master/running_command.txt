@@ -1,0 +1,22 @@
+
+1.安装docker，进入Dockerfile所在目录。
+
+2.docker build --tag='your tag' .
+别漏了最后的.，这表示执行Dockerfile
+
+3.更改docker-compose.yml中image为你刚刚build的image。文件中其他参数含义参考https://docs.docker.com/get-started/part3/
+
+4.
+docker swarm init
+docker stack deploy -c docker-compose.yml getstartedlab
+其中getstartedlab改为你想要的名字即可
+若要停止，则docker stack rm getstartedlab
+
+5.浏览器访问ip:host/ping，若页面出现'pong'，则表示程序运行成功，可访问ip:host/faiss/create_db等四个接口
+注1：程序中默认端口为5000,docker映射宿主机端口为4001.前者可在src/app.py中更改（如port=80），后者在docker-compose.yml中更改。浏览器访问时，端口为宿主机映射端口。
+注2：由于程序开发时使用win7，ip可通过docker-machine ip得到，但不能使用localhost或者127.0.0.1，这造成局域网其他电脑不能访问该docker应用.需要通过virtualbox将ip转换为宿主机在局域网中的ip（即主机ip），
+	 具体参考https://blog.csdn.net/CZT56CSDN/article/details/82017840
+	 如果是win10或其他，本人没有测试过，猜测局域网电脑可直接通过宿主机ip访问，不需要转换。具体请自行探索。
+	 
+
+每次程序修改后均需要进行上述步骤。
